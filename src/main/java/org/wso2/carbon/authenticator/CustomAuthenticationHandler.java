@@ -74,7 +74,6 @@ public class CustomAuthenticationHandler extends AbstractHandler {
         //return false;
     }
 
-
     private Map getTransportHeaders(MessageContext messageContext) {
         return (Map) ((Axis2MessageContext) messageContext).getAxis2MessageContext().
                 getProperty(org.apache.axis2.context.MessageContext.TRANSPORT_HEADERS);
