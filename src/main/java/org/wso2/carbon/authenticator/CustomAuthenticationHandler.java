@@ -53,23 +53,23 @@ public class CustomAuthenticationHandler extends AbstractHandler {
         String authHeader = (String) headers.get(CUSTOM_AUTHENTICATION_HEADER);
 
 
-        // These values must be passed from the device and these variables has to be populated.
+        // These values must be passed by the user and these variables has to be populated.
         String tenantDomain = "carbon.super";
-        String deviceType = "android";
         String username = "admin";
 
 
         // Fill here with the custom authentication logic as you wish. For example call an external system to
-        // validate a value that comes in the CUSTOM_AUTHENTICATION_HEADER
+        // validate a value that comes in the CUSTOM_AUTHENTICATION_HEADER. After authenticating, the information
+        // about the user needs to be passed to the backend, therefore a JWT token is generated.
 
         //if (authHeader.startsWith("custom_authenticated_value")) {
-        try {
-            headers.put(X_JWT_ASSERTION, AuthenticationUtils.createJWTToken(username, tenantDomain, deviceType));
-            return true;
-        } catch (CustomAuthenticatorException e) {
-            log.error("Error while attempting to authenticate the request.", e);
-            return false;
-        }
+            try {
+                headers.put(X_JWT_ASSERTION, AuthenticationUtils.createJWTToken(username, tenantDomain));
+                return true;
+            } catch (CustomAuthenticatorException e) {
+                log.error("Error while attempting to authenticate the request.", e);
+                return false;
+            }
         //}
         //return false;
     }

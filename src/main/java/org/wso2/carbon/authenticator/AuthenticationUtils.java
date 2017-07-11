@@ -34,14 +34,13 @@ public class AuthenticationUtils {
 
     private static final Log log = LogFactory.getLog(AuthenticationUtils.class);
 
-    public static String createJWTToken(String username, String tenantDomain, String deviceType) throws
+    public static String createJWTToken(String username, String tenantDomain) throws
             CustomAuthenticatorException {
         String tenantId = String.valueOf(getTenantID(tenantDomain));
         Map<String, String> claims = new HashMap<>();
 
         claims.put("http://wso2.org/claims/enduserTenantId", tenantId);
         claims.put("http://wso2.org/claims/enduser", username + "@" + tenantDomain);
-        claims.put("http://wso2.org/claims/deviceIdType", deviceType);
 
         try {
             PrivilegedCarbonContext.startTenantFlow();
@@ -50,15 +49,14 @@ public class AuthenticationUtils {
             PrivilegedCarbonContext.getThreadLocalCarbonContext()
                     .setTenantDomain(tenantDomain);
             JWTClientManagerService jwtClientManagerService = getJwtClientManagerService();
-            return jwtClientManagerService.getJWTClient()
-                    .getJwtToken(username, claims,
-                            true);
+            return jwtClientManagerService.getJWTClient().getJwtToken(username, claims, true);
         } catch (JWTClientException e) {
-            e.printStackTrace();
+            String msg = "Erroe while creating, JWT token";
+            log.error(msg);
+            throw new CustomAuthenticatorException(msg);
         } finally {
             PrivilegedCarbonContext.endTenantFlow();
         }
-        return null;
     }
 
     private static int getTenantID(String tenantDomain) throws CustomAuthenticatorException {
