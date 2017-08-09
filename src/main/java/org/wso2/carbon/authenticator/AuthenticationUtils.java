@@ -51,8 +51,7 @@ public class AuthenticationUtils {
             JWTClientManagerService jwtClientManagerService = getJwtClientManagerService();
             return jwtClientManagerService.getJWTClient().getJwtToken(username, claims, true);
         } catch (JWTClientException e) {
-            String msg = "Erroe while creating, JWT token";
-            log.error(msg);
+            String msg = "Error while creating JWT client for user " + username + " in tenant " + tenantDomain;
             throw new CustomAuthenticatorException(msg);
         } finally {
             PrivilegedCarbonContext.endTenantFlow();
@@ -67,8 +66,7 @@ public class AuthenticationUtils {
 
             RealmService realmService = (RealmService) ctx.getOSGiService(RealmService.class, null);
             if (realmService == null) {
-                String msg = "RealmService is not initialized";
-                log.error(msg);
+                String msg = "RealmService is not initialized for tenant domain " + tenantDomain;
                 throw new CustomAuthenticatorException(msg);
             }
 
@@ -85,8 +83,7 @@ public class AuthenticationUtils {
             }
 
         } catch (UserStoreException e) {
-            String msg = "User store not initialized";
-            log.error(msg);
+            String msg = "User store not initialized with tenant domain " +  tenantDomain;
             throw new CustomAuthenticatorException(msg, e);
         } finally {
             PrivilegedCarbonContext.endTenantFlow();
@@ -101,7 +98,6 @@ public class AuthenticationUtils {
 
         if (jwtClientManagerService == null) {
             String msg = "JWTClientManagerService Management service not initialized.";
-            log.error(msg);
             throw new IllegalStateException(msg);
         }
 

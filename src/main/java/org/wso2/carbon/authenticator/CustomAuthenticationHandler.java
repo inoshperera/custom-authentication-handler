@@ -39,22 +39,17 @@ public class CustomAuthenticationHandler extends AbstractHandler {
             log.debug("CustomAuthenticationHandler handleRequest called");
         }
 
-        //Authenticate the request.
-        if (authenticate(messageContext)) {
-            return true;
-        }
-
-        return false;
+        return authenticate(messageContext);
     }
 
-    public boolean authenticate(MessageContext synCtx) {
+    private boolean authenticate(MessageContext synCtx) {
 
         Map headers = getTransportHeaders(synCtx);
         String authHeader = (String) headers.get(CUSTOM_AUTHENTICATION_HEADER);
 
 
         // These values must be passed by the user and these variables has to be populated.
-        String tenantDomain = "carbon.super";
+        String tenantDomain = "carbon.super";// This can be the teant you created for example marketing or sales
         String username = "admin";
 
 
