@@ -91,7 +91,7 @@ public class AuthenticationUtils {
         return tenantId;
     }
 
-    public static JWTClientManagerService getJwtClientManagerService() {
+    private static JWTClientManagerService getJwtClientManagerService() {
         PrivilegedCarbonContext ctx = PrivilegedCarbonContext.getThreadLocalCarbonContext();
         JWTClientManagerService jwtClientManagerService = (JWTClientManagerService)
                 ctx.getOSGiService(JWTClientManagerService.class, null);
